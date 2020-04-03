@@ -1,6 +1,6 @@
 // Creating function for Data plotting (Bar, gauge, bubble)
 function BuildCharts(id) {
-  // getting data from the json file
+  // Data from the json file
   d3.json("data/samples.json").then((data)=> {
       console.log(data)
 
@@ -12,23 +12,19 @@ function BuildCharts(id) {
       
       console.log(samples);
 
-      // Getting the top 10 
+      // Get top 10 
       var samplevalues = samples.sample_values.slice(0, 10).reverse();
 
-      // get only top 10 otu ids for the plot OTU and reversing it. 
+      // Get top 10 otu ids for the plot OTU and reversing it. 
       var OTU_top = (samples.otu_ids.slice(0, 10)).reverse();
       
-      // get the otu id's to the desired form for the plot
+      // Ger the otu id's to the desired form for the plot
       var OTU_id = OTU_top.map(d => "OTU " + d)
 
-    //   console.log(`OTU IDS: ${OTU_id}`)
-
-
+  
       // get the top 10 labels for the plot
       var labels = samples.otu_labels.slice(0, 10);
 
-    //   console.log(`Sample Values: ${samplevalues}`)
-    //   console.log(`Id Values: ${OTU_top}`)
       // create trace variable for the plot
       var trace = {
           x: samplevalues,
@@ -60,8 +56,6 @@ function BuildCharts(id) {
       // create the bar plot
       Plotly.newPlot("bar", data, layout);
 
-      //console.log(`ID: ${samples.otu_ids}`)
-    
       // The bubble chart
       var trace1 = {
           x: samples.otu_ids,
@@ -87,34 +81,6 @@ function BuildCharts(id) {
 
       // create the bubble plot
       Plotly.newPlot("bubble", data1, layout_b); 
-
-      // The guage chart
-
-     // var data_g = [
-     //  {
-     //   domain: { x: [0, 1], y: [0, 1] },
-     //   value: parseFloat(wfreq),
-     //   title: { text: `Weekly Washing Frequency ` },
-     //   type: "indicator",
-        
-     //   mode: "gauge+number",
-     //   gauge: { axis: { range: [null, 9] },
-     //            steps: [
-     //             { range: [0, 2], color: "yellow" },
-     //             { range: [2, 4], color: "cyan" },
-     //             { range: [4, 6], color: "teal" },
-     //             { range: [6, 8], color: "lime" },
-     //             { range: [8, 9], color: "green" },
-     //           ]}
-            
-      //  }
-      // ];
-      // var layout_g = { 
-      //    width: 700, 
-      //    height: 600, 
-      //    margin: { t: 20, b: 40, l:100, r:100 } 
-      //  };
-      // Plotly.newPlot("gauge", data_g, layout_g);
     });
 }  
 
@@ -122,21 +88,18 @@ function BuildGauge(wfreq) {
   // Enter the washing frequency between 0 and 180
   var level = parseFloat(wfreq) * 20;
 
-  // Trig to calc meter point
+  // Trig to calculate meter point
   var degrees = 180 - level;
   var radius = 0.5;
   var radians = (degrees * Math.PI) / 180;
   var x = radius * Math.cos(radians);
   var y = radius * Math.sin(radians);
-
-  // Path: may have to change to create a better triangle
   var mainPath = "M -.0 -0.05 L .0 0.05 L ";
   var pathX = String(x);
   var space = " ";
   var pathY = String(y);
   var pathEnd = " Z";
   var path = mainPath.concat(pathX, space, pathY, pathEnd);
-
   var data = [
     {
       type: "scatter",
@@ -207,9 +170,6 @@ function BuildGauge(wfreq) {
   var GAUGE = document.getElementById("gauge");
   Plotly.newPlot(GAUGE, data, layout);
 }
-
-
-
 // create the function to get the necessary data
 function GetSamples(id) {
   // read the json file to get data
